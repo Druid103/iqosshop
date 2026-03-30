@@ -40,6 +40,8 @@ class IcosService {
         await this.models.icos.update({name, description, price, image}, {where: {id}})
     }
 
+    async
+
 }
 
 const IcosService = new IcosService(allModels)
