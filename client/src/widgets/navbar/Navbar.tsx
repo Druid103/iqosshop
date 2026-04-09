@@ -1,34 +1,52 @@
-import { Menu, MenuItem } from 'semantic-ui-react';
-import 'semantic-ui-css/semantic.min.css';
-import { Link } from 'react-router-dom';
-type MenuProps = {
-  activeItem: string;
-  handleItemClick: (name: string) => void;
-};
-export default function NavBar({ handleItemClick, activeItem }: MenuProps): React.JSX.Element {
+import React from "react";
+import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/esm/Button";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import { NavLink } from "react-router-dom";
+
+export default function NavBar({ user, logoutHandler }) {
   return (
-    <Menu pointing inverted>
-      <MenuItem
-        as={Link}
-        to="/books"
-        name="Книги"
-        active={activeItem === 'Книги'}
-        onClick={() => handleItemClick('Книги')}
-      />
-      <MenuItem
-        as={Link}
-        to="/add"
-        name="Добавить книгу"
-        active={activeItem === 'Добавить книгу'}
-        onClick={() => handleItemClick('Добавить книгу')}
-      />
-      <MenuItem
-        as={Link}
-        to="/mybooks"
-        name="Мои книги"
-        active={activeItem === 'Мои книги'}
-        onClick={() => handleItemClick('Мои книги')}
-      />
-    </Menu>
+    <Navbar bg="light" data-bs-theme="light">
+      <Container>
+        <Nav className="me-auto">
+          <NavLink to="/" className="nav-link">
+            Home
+          </NavLink>
+          {user.data && (
+            <NavLink to="/my-xs" className="nav-link">
+              My xs
+            </NavLink>
+          )}
+        </Nav>
+        <Nav>
+          {!user.data && (
+            <>
+              <NavLink to="/auth/signin" className="nav-link">
+                Sign in
+              </NavLink>
+              <NavLink to="/auth/signup" className="nav-link">
+                Sign Up
+              </NavLink>
+              <span className="nav-link">|</span>
+            </>
+          )}
+          <span className="nav-link">
+            {user.data ? user.data.name : "Гость"}
+          </span>
+          {user.data && (
+            <span className="nav-link">
+              <Button
+                onClick={logoutHandler}
+                variant="outline-danger"
+                size="sm"
+              >
+                Logout
+              </Button>
+            </span>
+          )}
+        </Nav>
+      </Container>
+    </Navbar>
   );
 }
