@@ -1,0 +1,11 @@
+body {
+  font-family: 'Raleway', sans-serif;
+  background-color: #dcdcd4; /* Бежевый цвет */
+  margin: 0;
+  padding: 0;
+  height: 50%;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+}

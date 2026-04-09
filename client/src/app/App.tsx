@@ -1,48 +1,27 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import Layout from './Layout';
-import MainPage from './pages/pages/MainPage';
-import SignUpPage from './pages/pages/SignUpPage';
-import SignInPage from './pages/pages/SignInPage';
-import XPage from './pages/pages/XPage';
-import ProtectedRouter from './pages/HOCs/ProtectedRouter';
-import useUser from './hooks/useUser';
+import { Suspense, type JSX } from 'react';
+import { BrowserRouter } from 'react-router';
+import RouterProvider from './router/RouterProvider';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
+import InitProvider from '../app/InitProvaider/InitProvaider';
+//import styles from './app/App.module.css';
+import { injectStore } from '../shared/api/axiosInstance';
+import LoadingPage from '../pages/notFoundPage/NotFoundPage';
 
-function App() {
-  const { logoutHandler, signInHandler, signUpHandler, user } = useUser();
-  const router = createBrowserRouter([
-    {
-      path: '/',
-      element: <Layout user={user} logoutHandler={logoutHandler} />,
-      children: [
-        {
-          path: '/',
-          element: <MainPage user={user} />,
-        },
-        {
-          path: '/my-xs',
-          element: (
-            <ProtectedRouter isAllowed={user.status === 'logged'} redirect="/auth/signin">
-              <XPage user={user} />
-            </ProtectedRouter>
-          ),
-        },
-        {
-          element: <ProtectedRouter isAllowed={user.status !== 'logged'} />,
-          children: [
-            {
-              path: '/auth/signup',
-              element: <SignUpPage signUpHandler={signUpHandler} />,
-            },
-            {
-              path: '/auth/signin',
-              element: <SignInPage signInHandler={signInHandler} />,
-            },
-          ],
-        },
-      ],
-    },
-  ]);
-  return <RouterProvider router={router} />;
+function App(): JSX.Element {
+  return (
+    <>
+    <Suspense fallback={<LoadingPage />}>
+      <BrowserRouter>
+        <Provider store={store}>
+          <InitProvider>
+            <RouterProvider />
+          </InitProvider>
+        </Provider>
+      </BrowserRouter>
+    </Suspense>
+    </>
+  );
 }
-
+injectStore (store);
 export default App;
