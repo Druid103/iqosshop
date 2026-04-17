@@ -1,5 +1,5 @@
+// types.ts
 import type { z } from 'zod';
+import basketSchema from './schema'; // импортируем схему
 
-import { basketIcos } from '@/entities/icos/lib/slice';
-
-export type BasketT = z.infer<typeof basketIcos>; 
+export type BasketT = z.infer<typeof basketSchema>;

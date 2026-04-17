@@ -1,8 +1,8 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
-const icosRouter = require('./src/routes/icosRouter');
-const userRouter = require('./router/userRouter');
+const icosRouter = require('./routes/icosRouter');
+const userRouter = require('./routes/authRouter');
 const tokenRouter = require('./routes/tokenRouter');
 const app = express();
 

@@ -1,7 +1,7 @@
-const express = requre('express');
+const express = require('express');
 const icosRouter = express.Router();
 
-const icosController = require('../controller/icosController')
+const icosController = require('../controllers/icosController')
 
 icosRouter
 .route('/')
@@ -9,9 +9,9 @@ icosRouter
 
 icosRouter
 .route('/:id')
-.get(icosController.getIcosById)
-.post(icosController.createIcos)
-.put(icosController.updateIcos)
+.get(icosController.getOneIcos)
+.post(icosController.postIcos)
+.put(icosController.putIcos)
 .delete(icosController.deleteIcos)
 
 module.exports = icosRouter;
