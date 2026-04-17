@@ -1,12 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Route, Routes } from 'react-router';
 import Layout from '../Layout';
 import MainPage from '../../pages/mainPage/MainPage';
-import { useAppDispatch, useAppSelector } from '../../shared/lib/Hooks';
-import ProtectedRoute from '@/shared/lib/ProtectedRouter';
+import ProtectedRoute from '../../shared/lib/ProtectedRouter';
 
 function RouterProvider(): React.JSX.Element {
-  const dispatch = useAppDispatch();
 
   return (
     <Routes>

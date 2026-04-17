@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container';
 import NavBar from '../widgets/navbar/Navbar';
 import Loader from '../shared/ui/Loader';
 
-export default function Layout({ user, logoutHandler }) {
+export default function Layout() {
   return (
     <Loader showSpinner={user.status === 'fetching'}>
       <Container>

@@ -1,7 +1,7 @@
 import { isAxiosError, type AxiosInstance, type AxiosError } from 'axios';
 import type { BasketT } from '../model/types';
-import { basketIcosList } from '../model/schema';
-import { ZodError } from 'zod';
+import basketSchema from '../model/schema';
+import z, { ZodError } from 'zod';
 import axiosInstance from '../../../shared/api/axiosInstance';
 
 type BasketResponse = {
@@ -14,7 +14,8 @@ class BasketIcosService {
   async getBasketIcoss(): Promise<BasketT[]> {
     try {
       const res = await this.client.get<unknown>('/baskets');
-      return basketIcosList.parse(res.data);
+      const basketArraySchema = z.array(basketSchema);
+      return basketArraySchema.parse(res.data);
     } catch (error: unknown) {
       if (error instanceof ZodError) {
         console.error('Validation error:', error.issues);
@@ -29,14 +30,12 @@ class BasketIcosService {
     }
   }
 
-  toggleBasket = async (
-    bookId: number,
-  ): Promise<{ isBasket: boolean; baskets?: BasketT[] }> => {
+  toggleBasket = async (icosId: number): Promise<{ isBasket: boolean; baskets?: BasketT[] }> => {
     try {
       const response = await this.client.post<{
         isBasket: boolean;
         baskets?: BasketT[];
-      }>(`/baskets/${bookId.toString()}/toggle`, {});
+      }>(`/baskets/${icosId.toString()}/toggle`, {});
 
       return response.data;
     } catch (error: unknown) {
@@ -44,7 +43,7 @@ class BasketIcosService {
     }
   };
 
-  async getAllBaskets(): Promise<{ icoss: BasketT[];}> {
+  async getAllBaskets(): Promise<{ icoss: BasketT[] }> {
     try {
       const [basketsResponse] = await Promise.all([
         this.client.get<BasketT[]>('/baskets'),
@@ -60,22 +59,25 @@ class BasketIcosService {
     }
   }
 
-  async checkIsFavorite(bookId: number): Promise<boolean> {
+  async checkIsBasket(icosId: number): Promise<boolean> {
     try {
-      const res = await this.client.get<FavoriteResponse>(`/favorites/check?bookId=${bookId.toString()}`);
-      return res.data.isFavorite;
+      const res = await this.client.get<BasketResponse>(
+        `/baskets/check?icosId=${icosId.toString()}`,
+      );
+      return res.data.isBasket;
     } catch (error: unknown) {
-      throw BasketIcosService.handleError(error, 'Failed to check favorite status');
+      throw BasketIcosService.handleError(error, 'Failed to check Basket status');
     }
   }
 
-  async clearAllFavorites(): Promise<{ message: string;
+  async clearAllBaskets(): Promise<{
+    message: string;
 
-
-deletedCount: number }> {
+    deletedCount: number;
+  }> {
     try {
       const response = await this.client.delete<{ message: string; deletedCount: number }>(
-        '/favorites/clear-all',
+        '/basket/clear-all',
       );
       return response.data;
     } catch (error: unknown) {
@@ -102,9 +104,8 @@ deletedCount: number }> {
     }
     return undefined;
   }
-
 }
 
-const favoriteService = new BasketIcosService(axiosInstance);
+const basketService = new BasketIcosService(axiosInstance);
 
-export default favoriteService;
+export default basketService;

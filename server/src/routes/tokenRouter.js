@@ -1,6 +1,6 @@
 const tokenRouter = require('express').Router();
 const cookieConfig = require('../configs/cookie.config');
-const { verifyRefreshToken } = require('../middlewares/verifyTokens');
+const { verifyRefreshToken } = require('../middlewares/verifyAccessToken');
 const generateTokens = require('../utils/generateTokens');
 
 tokenRouter.get('/refresh', verifyRefreshToken, (req, res) => {

@@ -1,14 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import { icossReducer, icossSlice } from '../../entities/icos/lib/slice';
+import { icossReducer } from '../../entities/icos/lib/slice';
 import authReducer from '../../entities/auth/lib/slice';
-import { basketReducer } from '../../entities/favorites/redux/slice';
+import { basketReducer } from '../../entities/basket/lib/slice';
 import type { IcosT } from '../../entities/icos/model/types';
 
 type IcosState = {
   icoss: IcosT[];
-  likedIcos: IcosT[];
+  basketIcos: IcosT[];
   filtIcosBD: IcosT[];
   loading: boolean;
   apiIcoss: IcosT[];
@@ -37,10 +37,10 @@ const safeIcossTransform = {
             }))
           : [],
         basketIcos: Array.isArray(stateObj.basketIcos)
-          ? (stateObj.likedIcos as IcosT[]).map((icos: IcosT) => ({
-              ...icossSlice,
-              id: icossSlice.id || Math.floor(Math.random() * 1000000),
-              title: icossSlice.name ?? 'Unknown Name',
+          ? (stateObj.basketIcos as IcosT[]).map((basket: IcosT) => ({
+              ...basket,
+              id: basket.id || Math.floor(Math.random() * 1000000),
+              name: basket.name ?? 'Unknown Name',
             }))
           : [],
         loading: false,

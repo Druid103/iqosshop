@@ -11,9 +11,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({
       User,
-      icos}) {
-        this.belongsTo(User, {foreignKey: 'userId'})
-        this.belongsTo(icos, {foreignKey: 'icosId'}) 
+      Icos}) {
+       this.belongsTo(User, {
+        foreignKey: 'userId',
+        as: 'user',
+        onDelete: 'CASCADE',
+      });
+
+      this.belongsTo(Icos, {
+        foreignKey: 'icosId',
+        as: 'icos',
+        onDelete: 'CASCADE',
+      });
     }
   }
   Favorite.init({

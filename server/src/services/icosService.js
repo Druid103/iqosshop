@@ -36,6 +36,7 @@ class IcosService {
         return icos
 
     }
+
     async updateIcos({id}, {name, description, price, image}) {
         await this.models.icos.update({name, description, price, image}, {where: {id}})
     }
@@ -44,5 +45,5 @@ class IcosService {
 
 }
 
-const IcosService = new IcosService(allModels)
-module.exports = IcosService;
+const icosService = new IcosService(allModels)
+module.exports = icosService;

@@ -47,5 +47,5 @@ class IcosController {
     };
 }
 
-const IcosController = new IcosController();
-module.exports = IcosController;
+const icosController = new IcosController();
+module.exports = icosController;
