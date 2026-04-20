@@ -1,14 +1,8 @@
 import { AxiosError, type AxiosInstance } from 'axios';
 import { ZodError } from 'zod';
 
-import type { BackendAuthType, UserType } from '../model/types';
-import {
-  backendAuthSchema,
-  userCreateSchema,
-  userLoginSchema,
-  userSchema,
-
-} from '../model/schema';
+import type { BackendAuthType } from '../model/types';
+import { backendAuthSchema, userCreateSchema, userLoginSchema } from '../model/schema';
 import axiosInstance from '../../../shared/api/axiosInstance';
 
 class AuthService {
@@ -17,18 +11,7 @@ class AuthService {
   async signup(formData: FormData): Promise<BackendAuthType> {
     try {
       const data = userCreateSchema.parse(Object.fromEntries(formData));
-      console.log(data, '333');
-
-      const fullName = `${data.firstName} ${data.lastName} ${data.middleName}`.trim();
-      console.log(fullName, '111');
-
-      const payload = {
-        name: fullName,
-        role: 'patient',
-        email: data.email,
-        password: data.password,
-      };
-      const res = await this.client.post('/auth/signup', payload, {
+      const res = await this.client.post('/auth/signup', data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -82,26 +65,8 @@ class AuthService {
   logout(): Promise<void> {
     return this.client('/auth/logout');
   }
-
-  async updataUser(formData: FormData): Promise<UserType> {
-    try {
-      const idEntry = formData.get('id');
-      if (!idEntry || typeof idEntry !== 'string') {
-        throw new Error('ID is required and must be a string');
-      }
-      const id = idEntry;
-      const res = await this.client.put(`/auth/${id}`, formData);
-      if (res.status !== 200)
-        throw new Error('Неверный статус при обновлении пользователя (ожидалось 200)');
-      const authResponse = userSchema.parse(res.data);
-      return authResponse;
-    } catch (err) {
-      if (err instanceof ZodError) {
-        console.log('Validation error in auth service', err.issues);
-      }
-      throw err;
-    }
-  }
 }
+
+// qweQWE1!
 
 export default new AuthService(axiosInstance);

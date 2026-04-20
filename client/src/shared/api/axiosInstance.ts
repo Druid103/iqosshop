@@ -11,8 +11,8 @@ export function injectStore(_store: StoreT): void {
 }
 
 const axiosInstance = axios.create({
-  baseURL: '/api',
-  withCredentials: true, // ДОБАВЬТЕ это для работы с cookies
+  
+  withCredentials: true,
 });
 
 axiosInstance.interceptors.request.use((config) => {
@@ -51,7 +51,7 @@ axiosInstance.interceptors.response.use(
         
         // Повторяем оригинальный запрос с новым токеном
         prevReq.headers.Authorization = `Bearer ${accessToken}`;
-        return axiosInstance(prevReq);
+        return await axiosInstance(prevReq);
       } catch (refreshError) {
         // Если рефреш не удался - разлогиниваем
         store?.dispatch({ type: 'auth/logout' });
