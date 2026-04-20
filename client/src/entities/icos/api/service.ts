@@ -32,7 +32,7 @@ class IcosService {
   async createIcos(formData: AddIcosT): Promise<IcosT> {
     try {
       const res = await this.client.post('/icoss', formData, {
-        withCredentials: true, 
+        withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -101,7 +101,7 @@ class IcosService {
 
   async searchIcosByTitle(input: string): Promise<IcosT[]> {
     try {
-      const res = await this.client.get(`/books/search`, {
+      const res = await this.client.get(`/icoss/search`, {
         params: {
           input,
         },
