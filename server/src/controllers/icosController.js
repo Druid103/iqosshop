@@ -1,9 +1,10 @@
+/* eslint-disable class-methods-use-this */
 const IcosService = require('../services/icosService');
 
 class IcosController {
   getAllIcos = async (req, res) => {
     try {
-      const icos = await IcosService.getAll();
+      const icos = await IcosService.getAllIcoss();
       res.json(icos);
     } catch (e) {
       res.status(500).json(e.message);

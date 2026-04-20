@@ -12,7 +12,3 @@ export const signinThunk = createAsyncThunk('auth/signinThunk', (formData: FormD
 export const refreshThunk = createAsyncThunk('auth/refreshThunk', () => authService.refresh());
 
 export const logoutThunk = createAsyncThunk('auth/logoutThunk', () => authService.logout());
-
-export const updateThunk = createAsyncThunk('auth/updateThunk', (formData: FormData) =>
-  authService.updataUser(formData),
-);

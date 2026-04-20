@@ -1,13 +1,12 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import type { AuthSliceType, UserType } from '../model/types';
+import type { AuthSliceType, BackendAuthType } from '../model/types';
 import { AuthStatus } from '../model/types';
-import { logoutThunk, refreshThunk, signinThunk, signupThunk, updateThunk } from './thunks';
+import { logoutThunk, refreshThunk, signinThunk, signupThunk } from './thunks';
 
 const initialState: AuthSliceType = {
   data: { status: AuthStatus.fetching },
   accessToken: '',
-  selectedUser: null,
 };
 
 export const authSlice = createSlice({
@@ -20,14 +19,11 @@ export const authSlice = createSlice({
     clearAccessToken: (state) => {
       state.accessToken = '';
     },
-    setSelectedUser: (state, action: PayloadAction<UserType>) => {
-      state.selectedUser = action.payload;
-    },
   },
 
   extraReducers: (builder) => {
     builder
-      .addCase(signupThunk.fulfilled, (state, action) => {
+      .addCase(signupThunk.fulfilled, (state, action: PayloadAction<BackendAuthType>) => {
         state.accessToken = action.payload.accessToken;
         state.data = {
           status: AuthStatus.authenticated,
@@ -68,20 +64,14 @@ export const authSlice = createSlice({
         };
       })
       .addCase(logoutThunk.fulfilled, (state) => {
+         console.log('🔵 Logout fulfilled, clearing state');
         state.accessToken = '';
         state.data = {
           status: AuthStatus.guest,
-        };
-      })
-      .addCase(updateThunk.fulfilled, (state, action) => {
-        state.data = {
-          status: AuthStatus.authenticated,
-          user: action.payload,
         };
       });
   },
 });
 
-// Action creators are generated for each case reducer function
-export const { setAccessToken, clearAccessToken, setSelectedUser } = authSlice.actions;
+export const { setAccessToken, clearAccessToken } = authSlice.actions;
 export default authSlice.reducer;

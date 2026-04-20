@@ -6,6 +6,8 @@ import Layout from '../Layout';
 import MainPage from '../../pages/mainPage/MainPage';
 import ProtectedRoute from '../../shared/lib/ProtectedRouter';
 import type { RootState } from '../store/store';
+import IcosPage from '../../pages/icosPage/IcosPage';
+import AuthPage from '../../pages/rega/AuthPage';
 
 enum AuthStatus {
   authenticated = 'authenticated',
@@ -21,13 +23,16 @@ function RouterProvider(): React.JSX.Element {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<MainPage />} />
-        
+        <Route path="/icoss" element={<IcosPage />} />
+         <Route path="/auth" element={<AuthPage />} />
+
         <Route
           element={
             <ProtectedRoute isAllowed={status === AuthStatus.authenticated} redirectTo="/" />
           }
         >
           <Route path="/basket" element={<div>Basket Page</div>} />
+
           <Route path="/favorites" element={<div>Favorites Page</div>} />
         </Route>
       </Route>

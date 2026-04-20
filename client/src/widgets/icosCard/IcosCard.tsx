@@ -9,10 +9,10 @@ type IcosCardProps = {
   onAddToBasket?: (id: number) => void;
 };
 
-export default function IcosCard({ icos, onAddToBasket }: IcosCardProps) {
+export default function IcosCard({ icos, onAddToBasket }: IcosCardProps): React.JSX.Element {
   return (
     <Card style={{ width: '18rem', margin: '1rem' }}>
-      <Card.Img variant="top" src={icos.image || '/default-image.jpg'} />
+      <Card.Img variant="top" src={icos.image ?? '/default-image.jpg'} />
       <Card.Body>
         <Card.Title>{icos.name}</Card.Title>
         <Card.Text>{icos.description}</Card.Text>

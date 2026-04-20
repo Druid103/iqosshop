@@ -1,14 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { IcosT } from '../model/types';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import {
-  addIcosThunk,
-  deleteIcosThunk,
-  fetchIcossThunk,
-  basketIcosThunk,
-  searchIcossThunk,
-  updateIcosThunk,
-} from './thunks';
+import { addIcosThunk, deleteIcosThunk, fetchIcossThunk, updateIcosThunk } from './thunks';
 
 export type IcosState = {
   icoss: IcosT[];
@@ -47,7 +40,7 @@ export const icossSlice = createSlice({
       );
       state.sort.order = order === 'asc' ? 'desc' : 'asc';
     },
-    
+
     setSelected: (state, action: PayloadAction<IcosT | null>) => {
       state.selectedIcos = action.payload;
     },
@@ -84,9 +77,11 @@ export const icossSlice = createSlice({
       .addCase(fetchIcossThunk.pending, (state) => {
         state.loading = true;
       })
-   
-      .addCase(fetchIcossThunk.rejected, (state) => {
+
+      .addCase(fetchIcossThunk.fulfilled, (state, action) => {
+        // ← Добавьте это
         state.loading = false;
+        state.icoss = action.payload;
       })
       .addCase(addIcosThunk.fulfilled, (state, action) => {
         const existingIcos = state.icoss.find((icos) => icos.id === action.payload.id);
@@ -105,15 +100,13 @@ export const icossSlice = createSlice({
         state.basketIcos = state.basketIcos.map((icos) =>
           icos.id === action.payload.id ? action.payload.res : icos,
         );
-      })
+      });
   },
 });
 
 export const {
   sortByTitle,
- 
-  
-  
+
   setSelected,
   basketIcos,
   searchIcossFilterBD,

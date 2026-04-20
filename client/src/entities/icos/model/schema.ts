@@ -13,8 +13,8 @@ const icosSchema = z.object({
   price: z.number(),
   image: z.string().optional(),
   userId: z.number().optional(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
   User: userSchema.optional(),
 });
 

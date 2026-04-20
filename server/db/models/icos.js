@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Icos.init({
     name: DataTypes.STRING,
-    discription: DataTypes.TEXT,
+    description: DataTypes.TEXT,
     image: DataTypes.STRING,
     price: DataTypes.INTEGER,
     userId: DataTypes.INTEGER

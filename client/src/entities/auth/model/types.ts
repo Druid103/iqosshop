@@ -4,12 +4,10 @@ import type {
   userCreateSchema,
   userLoginSchema,
   userSchema,
-  userSchemaForUpdata,
 } from '../model/schema';
 export type UserType = z.infer<typeof userSchema>;
 export type UserSignupForm = z.infer<typeof userCreateSchema>;
 export type UserSigninForm = z.infer<typeof userLoginSchema>;
-export type UserTypeForFront = z.infer<typeof userSchemaForUpdata>;
 
 export enum AuthStatus {
   fetching = 'fetching',
@@ -36,5 +34,4 @@ export type AuthType =
 export type AuthSliceType = {
   accessToken: string;
   data: AuthType;
-  selectedUser: UserType | null;
 };
