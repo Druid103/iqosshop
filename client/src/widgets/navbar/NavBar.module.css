@@ -1,0 +1,197 @@
+.navbar {
+  width: 100%;
+  padding: 0.5rem 0;
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.98) 0%, rgba(15, 15, 15, 0.95) 100%) !important;
+  border-bottom: 1px solid #d4af37;
+  position: relative;
+  backdrop-filter: blur(10px);
+}
+
+.navbar::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #d4af37, #f7ef8a, #d4af37, transparent);
+  animation: goldShimmer 3s ease-in-out infinite;
+}
+
+@keyframes goldShimmer {
+  0%, 100% {
+    background-position: -200% center;
+  }
+  50% {
+    background-position: 200% center;
+  }
+}
+
+.brand {
+  margin-right: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.brand:hover {
+  transform: scale(1.05);
+}
+
+.navLinks {
+  flex-grow: 1;
+}
+
+.navLinks .navLink {
+  color: #e0e0e0 !important;
+  margin: 0 0.5rem;
+  padding: 0.5rem 1rem !important;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  position: relative;
+  font-weight: 500;
+}
+
+.navLinks .navLink:hover {
+  color: #d4af37 !important;
+  background: rgba(212, 175, 55, 0.1);
+}
+
+.navLinks .navLink.active {
+  color: #d4af37 !important;
+  background: rgba(212, 175, 55, 0.15);
+}
+
+.navLinks .navLink.active::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #d4af37, transparent);
+}
+
+.userInfo {
+  color: #d4af37 !important;
+  display: flex;
+  align-items: center;
+  margin: 0 1rem;
+  font-weight: 600;
+}
+
+.searchForm {
+  min-width: 200px;
+  margin-right: 1rem;
+}
+
+.searchForm .formControl {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #333;
+  color: #e0e0e0;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.searchForm .formControl:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #d4af37;
+  color: #e0e0e0;
+  box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
+}
+
+.searchForm .formControl::placeholder {
+  color: #888;
+}
+
+/* Стили для иконки бренда */
+.brandImage {
+  filter: brightness(0) saturate(100%) invert(77%) sepia(39%) saturate(576%) hue-rotate(360deg) brightness(105%) contrast(101%);
+  transition: all 0.3s ease;
+}
+
+.brand:hover .brandImage {
+  filter: brightness(0) saturate(100%) invert(84%) sepia(29%) saturate(606%) hue-rotate(360deg) brightness(107%) contrast(101%);
+  transform: rotate(5deg);
+}
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+@media (max-width: 991.98px) {
+  .navLinks .navLink {
+    margin: 0.2rem 0;
+    text-align: center;
+  }
+  
+  .navLinks .navLink.active::after {
+    bottom: -5px;
+    width: 60%;
+  }
+  
+  .userInfo {
+    margin: 0.5rem 0;
+    justify-content: center;
+  }
+  
+  .searchForm {
+    margin: 0.5rem 0;
+    min-width: 100%;
+  }
+}
+
+.brandIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: rgba(212, 175, 55, 0.1);
+  border: 2px solid #d4af37;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.brandIconWrapper:hover {
+  background: rgba(212, 175, 55, 0.2);
+  border-color: #f7ef8a;
+  transform: scale(1.05) rotate(5deg);
+}
+
+.brandIcon {
+  color: #d4af37 !important;
+  transition: all 0.3s ease;
+}
+
+.brandIconWrapper:hover .brandIcon {
+  color: #f7ef8a !important;
+  transform: scale(1.1);
+}
+
+.brandContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brandText {
+  color: #d4af37;
+  font-weight: 700;
+  font-size: 1.3rem;
+  background: linear-gradient(90deg, #d4af37, #f7ef8a, #d4af37);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldShimmer 3s ease-in-out infinite;
+}
+
+@keyframes goldShimmer {
+  0%, 100% {
+    background-position: -200% center;
+  }
+  50% {
+    background-position: 200% center;
+  }
+}

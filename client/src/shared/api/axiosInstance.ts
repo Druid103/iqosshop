@@ -12,33 +12,54 @@ export function injectStore(_store: StoreT): void {
 
 const axiosInstance = axios.create({
   baseURL: '/api',
+  withCredentials: true, // ДОБАВЬТЕ это для работы с cookies
 });
 
 axiosInstance.interceptors.request.use((config) => {
-  if (!config.headers.Authorization) {
-    config.headers.Authorization = `Bearer ${store?.getState().auth.accessToken ?? ''}`;
+  const token = store?.getState().auth.accessToken;
+  if (token && !config.headers.Authorization) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
 
 axiosInstance.interceptors.response.use(
   (res) => res,
-  async (error: AxiosError & { config: { sent: boolean } }) => {
+  async (error: AxiosError & { config: { sent?: boolean } }) => {
     const prevReq = error.config;
-    if (error.response?.status === 403 && !prevReq.sent) {
-      const res = await axios.get('/api/tokens/refresh');
-      const { accessToken } = res.data as AuthSliceType;
-
-      if (!accessToken) {
-        return Promise.reject(error);
-      }
+    
+    // Обрабатываем и 401, и 403
+    if ((error.response?.status === 401 || error.response?.status === 403) && !prevReq.sent) {
       prevReq.sent = true;
-      store?.dispatch({ type: 'auth/setAccessToken', payload: accessToken });
-      prevReq.headers.Authorization = `Bearer ${store?.getState().auth.accessToken ?? ''}`;
-      return axiosInstance(prevReq);
+      
+      try {
+        // Пытаемся обновить токен
+        const res = await axios.get('/api/tokens/refresh', {
+          withCredentials: true // Важно для отправки refresh token из cookies
+        });
+        
+        const { accessToken } = res.data as AuthSliceType;
+
+        if (!accessToken) {
+          // Если не удалось получить токен - разлогиниваем пользователя
+          store?.dispatch({ type: 'auth/logout' });
+          return Promise.reject(error);
+        }
+        
+        // Обновляем токен в store
+        store?.dispatch({ type: 'auth/setAccessToken', payload: accessToken });
+        
+        // Повторяем оригинальный запрос с новым токеном
+        prevReq.headers.Authorization = `Bearer ${accessToken}`;
+        return axiosInstance(prevReq);
+      } catch (refreshError) {
+        // Если рефреш не удался - разлогиниваем
+        store?.dispatch({ type: 'auth/logout' });
+        return Promise.reject(refreshError);
+      }
     }
     return Promise.reject(error);
-  },
+  }
 );
 
 export default axiosInstance;
